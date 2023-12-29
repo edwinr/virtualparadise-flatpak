@@ -9,6 +9,7 @@ finish-args:
   - "--socket=wayland"
   - --device=dri
   - --share=network
+  - --persist=.virtualparadise
 modules:
   - name: virtualparadise
     buildsystem: simple
@@ -50,6 +51,7 @@ modules:
         dest-filename: VirtualParadise.AppImage
         url: http://edwin-share.virtualparadise.org/2023/10/Virtual_Paradise-0.4.7-ci.3e0116a9291a76a27f0a5209b15100438baf5307-1-x86_64.AppImage
         sha256: a47503910bcff052960f6d14363868f97aa2255dd22c121e23717747a81a101b
+        only-arches: [x86_64]
   - name: zypak
     sources:
       - type: git
