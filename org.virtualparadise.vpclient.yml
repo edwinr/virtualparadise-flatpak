@@ -40,6 +40,7 @@ modules:
       - install -D -t /app/lib/virtualparadise/locales squashfs-root/usr/lib/virtualparadise/locales/en-US.pak
       - mkdir -p /app/share/virtualparadise
       - cp -R squashfs-root/usr/share/virtualparadise/* /app/share/virtualparadise/
+      - install -D -t /app/share/pixmaps/virtualparadise squashfs-root/usr/share/pixmaps/virtualparadise/*
     cleanup:
       - '*.AppImage'
       - 'squashfs-root'
