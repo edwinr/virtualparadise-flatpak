@@ -1,0 +1,58 @@
+id: org.virtualparadise.vpclient
+runtime: org.kde.Platform
+runtime-version: "5.15-23.08"
+sdk: org.kde.Sdk
+command: virtualparadise
+finish-args:
+  - "--share=ipc"
+  - "--socket=fallback-x11"
+  - "--socket=wayland"
+  - --device=dri
+  - --share=network
+modules:
+  - name: virtualparadise
+    buildsystem: simple
+    build-commands:
+      - chmod +x VirtualParadise.AppImage
+      - ./VirtualParadise.AppImage --appimage-extract
+      - install -D squashfs-root/usr/bin/virtualparadise /app/bin/virtualparadise.bin
+      - install -D virtualparadise.sh /app/bin/virtualparadise
+      - >
+        install -D -t /app/lib \
+          squashfs-root/usr/lib/icudtl.dat \
+          squashfs-root/usr/lib/libcef.so \
+          squashfs-root/usr/lib/libcrypto.so.1.1 \
+          squashfs-root/usr/lib/libcurl.so \
+          squashfs-root/usr/lib/libGLEW.so.2.1 \
+          squashfs-root/usr/lib/libGLU.so.1 \
+          squashfs-root/usr/lib/libogg.so.0 \
+          squashfs-root/usr/lib/libopus.so.0 \
+          squashfs-root/usr/lib/libopusfile.so.0 \
+          squashfs-root/usr/lib/libssl.so.1.1 \
+          squashfs-root/usr/lib/snapshot_blob.bin \
+          squashfs-root/usr/lib/v8_context_snapshot.bin
+      - >
+        install -D -t /app/lib/virtualparadise \
+          squashfs-root/usr/lib/virtualparadise/chrome_100_percent.pak \
+          squashfs-root/usr/lib/virtualparadise/chrome_200_percent.pak \
+          squashfs-root/usr/lib/virtualparadise/libvpvkrenderer.so \
+          squashfs-root/usr/lib/virtualparadise/resources.pak
+      - install -D -t /app/lib/virtualparadise/locales squashfs-root/usr/lib/virtualparadise/locales/en-US.pak
+      - mkdir -p /app/share/virtualparadise
+      - cp -R squashfs-root/usr/share/virtualparadise/* /app/share/virtualparadise/
+    cleanup:
+      - '*.AppImage'
+      - 'squashfs-root'
+    sources:
+      - type: file
+        path: virtualparadise.sh
+      - type: file
+        dest-filename: VirtualParadise.AppImage
+        url: http://edwin-share.virtualparadise.org/2023/10/Virtual_Paradise-0.4.7-ci.3e0116a9291a76a27f0a5209b15100438baf5307-1-x86_64.AppImage
+        sha256: a47503910bcff052960f6d14363868f97aa2255dd22c121e23717747a81a101b
+  - name: zypak
+    sources:
+      - type: git
+        url: https://github.com/refi64/zypak.git
+        branch: main
+        commit: ded79a2f8a509adc21834b95a9892073d4a91fdc
