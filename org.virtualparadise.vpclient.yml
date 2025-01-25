@@ -1,14 +1,16 @@
 id: org.virtualparadise.vpclient
 runtime: org.kde.Platform
-runtime-version: "5.15-23.08"
+runtime-version: "5.15-24.08"
 sdk: org.kde.Sdk
 command: virtualparadise
 finish-args:
   - "--share=ipc"
+  #- "--socket=wayland"
   - "--socket=x11"
   - --device=dri
   - --share=network
   - --persist=.virtualparadise
+  - --socket=pulseaudio
 modules:
   - name: virtualparadise
     buildsystem: simple
@@ -22,8 +24,6 @@ modules:
           squashfs-root/usr/lib/icudtl.dat \
           squashfs-root/usr/lib/libcef.so \
           squashfs-root/usr/lib/libcrypto.so.1.1 \
-          squashfs-root/usr/lib/libcurl.so \
-          squashfs-root/usr/lib/libGLEW.so.2.1 \
           squashfs-root/usr/lib/libGLU.so.1 \
           squashfs-root/usr/lib/libogg.so.0 \
           squashfs-root/usr/lib/libopus.so.0 \
@@ -32,11 +32,13 @@ modules:
           squashfs-root/usr/lib/snapshot_blob.bin \
           squashfs-root/usr/lib/v8_context_snapshot.bin
       - >
+        install -D -t /app/lib \
+          squashfs-root/usr/lib/chrome_100_percent.pak \
+          squashfs-root/usr/lib/chrome_200_percent.pak \
+          squashfs-root/usr/lib/resources.pak
+      - >
         install -D -t /app/lib/virtualparadise \
-          squashfs-root/usr/lib/virtualparadise/chrome_100_percent.pak \
-          squashfs-root/usr/lib/virtualparadise/chrome_200_percent.pak \
           squashfs-root/usr/lib/virtualparadise/libvpvkrenderer.so \
-          squashfs-root/usr/lib/virtualparadise/resources.pak
       - install -D -t /app/lib/virtualparadise/locales squashfs-root/usr/lib/virtualparadise/locales/en-US.pak
       - mkdir -p /app/share/virtualparadise
       - cp -R squashfs-root/usr/share/virtualparadise/* /app/share/virtualparadise/
@@ -49,8 +51,8 @@ modules:
         path: virtualparadise.sh
       - type: file
         dest-filename: VirtualParadise.AppImage
-        url: http://edwin-share.virtualparadise.org/2023/10/Virtual_Paradise-0.4.7-ci.3e0116a9291a76a27f0a5209b15100438baf5307-1-x86_64.AppImage
-        sha256: a47503910bcff052960f6d14363868f97aa2255dd22c121e23717747a81a101b
+        url: https://static.virtualparadise.org/downloads/Virtual_Paradise-0.4.10-1-x86_64.AppImage
+        sha256: 5b9e237c2092449ef957207c4c9bcd92c12da9364883a13809084f6294e4f366
         only-arches: [x86_64]
   - name: zypak
     sources:
